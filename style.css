@@ -132,6 +132,16 @@ h1 {
     }
 }
 
+.card-image {
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    border: 2px solid #d4af37;
+}
+
 #cardName {
     color: #d4af37;
     font-size: 2rem;
