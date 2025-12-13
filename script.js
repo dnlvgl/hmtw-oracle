@@ -72,15 +72,22 @@ const tarotCards = [
     { name: "Ten of Pentacles", meaning: "Wealth, financial security, family, long-term success, and legacy.", image: "images/pe10.jpg" }
 ];
 
-const drawButton = document.getElementById('drawCard');
+const drawAnyButton = document.getElementById('drawAny');
+const drawMajorButton = document.getElementById('drawMajor');
+const drawMinorButton = document.getElementById('drawMinor');
 const cardDisplay = document.getElementById('cardDisplay');
 const cardImage = document.getElementById('cardImage');
 const cardName = document.getElementById('cardName');
 const cardMeaning = document.getElementById('cardMeaning');
 
-drawButton.addEventListener('click', () => {
-    const randomIndex = Math.floor(Math.random() * tarotCards.length);
-    const selectedCard = tarotCards[randomIndex];
+// Major Arcana: first 22 cards
+const majorArcana = tarotCards.slice(0, 22);
+// Minor Arcana: remaining cards
+const minorArcana = tarotCards.slice(22);
+
+function displayCard(deck) {
+    const randomIndex = Math.floor(Math.random() * deck.length);
+    const selectedCard = deck[randomIndex];
 
     cardImage.src = selectedCard.image;
     cardImage.alt = selectedCard.name;
@@ -94,4 +101,16 @@ drawButton.addEventListener('click', () => {
     setTimeout(() => {
         cardDisplay.style.animation = '';
     }, 10);
+}
+
+drawAnyButton.addEventListener('click', () => {
+    displayCard(tarotCards);
+});
+
+drawMajorButton.addEventListener('click', () => {
+    displayCard(majorArcana);
+});
+
+drawMinorButton.addEventListener('click', () => {
+    displayCard(minorArcana);
 });
