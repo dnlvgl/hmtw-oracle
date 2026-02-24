@@ -34,6 +34,10 @@ const tarotCards = [
     { name: "Eight of Cups", image: "images/cu08.jpg" },
     { name: "Nine of Cups", image: "images/cu09.jpg" },
     { name: "Ten of Cups", image: "images/cu10.jpg" },
+    { name: "Page of Cups", image: "images/cupa.jpg" },
+    { name: "Knight of Cups", image: "images/cukn.jpg" },
+    { name: "Queen of Cups", image: "images/cuqu.jpg" },
+    { name: "King of Cups", image: "images/cuki.jpg" },
 
     // Minor Arcana - Wands
     { name: "Ace of Wands", image: "images/waac.jpg" },
@@ -46,6 +50,10 @@ const tarotCards = [
     { name: "Eight of Wands", image: "images/wa08.jpg" },
     { name: "Nine of Wands", image: "images/wa09.jpg" },
     { name: "Ten of Wands", image: "images/wa10.jpg" },
+    { name: "Page of Wands", image: "images/wapa.jpg" },
+    { name: "Knight of Wands", image: "images/wakn.jpg" },
+    { name: "Queen of Wands", image: "images/waqu.jpg" },
+    { name: "King of Wands", image: "images/waki.jpg" },
 
     // Minor Arcana - Swords
     { name: "Ace of Swords", image: "images/swac.jpg" },
@@ -58,6 +66,10 @@ const tarotCards = [
     { name: "Eight of Swords", image: "images/sw08.jpg" },
     { name: "Nine of Swords", image: "images/sw09.jpg" },
     { name: "Ten of Swords", image: "images/sw10.jpg" },
+    { name: "Page of Swords", image: "images/swpa.jpg" },
+    { name: "Knight of Swords", image: "images/swkn.jpg" },
+    { name: "Queen of Swords", image: "images/swqu.jpg" },
+    { name: "King of Swords", image: "images/swki.jpg" },
 
     // Minor Arcana - Pentacles
     { name: "Ace of Pentacles", image: "images/peac.jpg" },
@@ -69,7 +81,11 @@ const tarotCards = [
     { name: "Seven of Pentacles", image: "images/pe07.jpg" },
     { name: "Eight of Pentacles", image: "images/pe08.jpg" },
     { name: "Nine of Pentacles", image: "images/pe09.jpg" },
-    { name: "Ten of Pentacles", image: "images/pe10.jpg" }
+    { name: "Ten of Pentacles", image: "images/pe10.jpg" },
+    { name: "Page of Pentacles", image: "images/pepa.jpg" },
+    { name: "Knight of Pentacles", image: "images/pekn.jpg" },
+    { name: "Queen of Pentacles", image: "images/pequ.jpg" },
+    { name: "King of Pentacles", image: "images/peki.jpg" }
 ];
 
 const drawAnyButton = document.getElementById('drawAny');
