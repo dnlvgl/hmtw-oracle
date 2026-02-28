@@ -166,6 +166,7 @@ function drawReplacements() {
 
 // --- Render ---
 function renderHand() {
+    handDisplay.style.setProperty('--hand-size', currentHand.length);
     handDisplay.innerHTML = '';
     handDisplay.classList.remove('hidden');
 
