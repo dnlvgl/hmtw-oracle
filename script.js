@@ -99,10 +99,24 @@ let selectedIndices = new Set();
 
 // --- DOM refs ---
 const handDisplay = document.getElementById('handDisplay');
+const handTotal = document.getElementById('handTotal');
 const actionButtons = document.getElementById('actionButtons');
 const discardSelectedBtn = document.getElementById('discardSelected');
 const drawReplacementsBtn = document.getElementById('drawReplacements');
 const handSizeDisplay = document.getElementById('handSizeDisplay');
+
+// --- Card value ---
+function getCardValue(card) {
+    const stem = card.image.split('/').pop().replace('.jpg', '');
+    if (stem.startsWith('ar')) return parseInt(stem.slice(2), 10); // 0–21
+    const suffix = stem.slice(2);
+    if (suffix === 'ac') return 1;
+    if (suffix === 'pa') return 11;
+    if (suffix === 'kn') return 12;
+    if (suffix === 'qu') return 13;
+    if (suffix === 'ki') return 14;
+    return parseInt(suffix, 10); // 2–10
+}
 
 // --- Deck helpers ---
 function getSourceDeck() {
@@ -182,11 +196,22 @@ function renderHand() {
             el.innerHTML = `
                 <img src="${card.image}" alt="${card.name}">
                 <div class="hand-card-name">${card.name}</div>
+                <div class="hand-card-value">${getCardValue(card)}</div>
             `;
             el.addEventListener('click', () => toggleSelect(i));
         }
 
         handDisplay.appendChild(el);
+    }
+
+    // Show total of drawn cards
+    const drawnCards = currentHand.filter(c => c !== null);
+    if (drawnCards.length > 0) {
+        const total = drawnCards.reduce((sum, c) => sum + getCardValue(c), 0);
+        handTotal.textContent = `Total: ${total}`;
+        handTotal.classList.remove('hidden');
+    } else {
+        handTotal.classList.add('hidden');
     }
 
     // Show/hide action buttons
