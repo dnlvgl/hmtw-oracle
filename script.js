@@ -227,6 +227,11 @@ document.getElementById('sizeUp').addEventListener('click', () => {
     }
 });
 
+document.getElementById('drawOne').addEventListener('click', () => {
+    currentHand = [pickRandom(getSourceDeck())];
+    selectedIndices.clear();
+    renderHand();
+});
 document.getElementById('drawHand').addEventListener('click', drawHand);
 discardSelectedBtn.addEventListener('click', discardSelected);
 drawReplacementsBtn.addEventListener('click', drawReplacements);
