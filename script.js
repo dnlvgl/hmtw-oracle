@@ -88,43 +88,145 @@ const tarotCards = [
     { name: "King of Pentacles", image: "images/peki.jpg" }
 ];
 
-const drawAnyButton = document.getElementById('drawAny');
-const drawMajorButton = document.getElementById('drawMajor');
-const drawMinorButton = document.getElementById('drawMinor');
-const cardDisplay = document.getElementById('cardDisplay');
-const cardImage = document.getElementById('cardImage');
-const cardName = document.getElementById('cardName');
-
-// Major Arcana: first 22 cards
 const majorArcana = tarotCards.slice(0, 22);
-// Minor Arcana: remaining cards
 const minorArcana = tarotCards.slice(22);
 
-function displayCard(deck) {
-    const randomIndex = Math.floor(Math.random() * deck.length);
-    const selectedCard = deck[randomIndex];
+// --- State ---
+let activeDeck = 'any';
+let handSize = 3;
+let currentHand = [];       // array of card objects or null (empty slot)
+let selectedIndices = new Set();
 
-    cardImage.src = selectedCard.image;
-    cardImage.alt = selectedCard.name;
-    cardName.textContent = selectedCard.name;
+// --- DOM refs ---
+const handDisplay = document.getElementById('handDisplay');
+const actionButtons = document.getElementById('actionButtons');
+const discardSelectedBtn = document.getElementById('discardSelected');
+const drawReplacementsBtn = document.getElementById('drawReplacements');
+const handSizeDisplay = document.getElementById('handSizeDisplay');
 
-    cardDisplay.classList.remove('hidden');
-
-    // Re-trigger animation
-    cardDisplay.style.animation = 'none';
-    setTimeout(() => {
-        cardDisplay.style.animation = '';
-    }, 10);
+// --- Deck helpers ---
+function getSourceDeck() {
+    if (activeDeck === 'major') return majorArcana;
+    if (activeDeck === 'minor') return minorArcana;
+    return tarotCards;
 }
 
-drawAnyButton.addEventListener('click', () => {
-    displayCard(tarotCards);
+function getAvailablePool() {
+    const source = getSourceDeck();
+    const inHand = new Set(currentHand.filter(c => c !== null).map(c => c.name));
+    return source.filter(c => !inHand.has(c.name));
+}
+
+function pickRandom(pool) {
+    return pool[Math.floor(Math.random() * pool.length)];
+}
+
+// --- Core actions ---
+function drawHand() {
+    const pool = getSourceDeck().slice();
+    // Fisher-Yates shuffle then take handSize
+    for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    currentHand = pool.slice(0, handSize);
+    selectedIndices.clear();
+    renderHand();
+}
+
+function toggleSelect(i) {
+    if (currentHand[i] === null) return;
+    if (selectedIndices.has(i)) {
+        selectedIndices.delete(i);
+    } else {
+        selectedIndices.add(i);
+    }
+    renderHand();
+}
+
+function discardSelected() {
+    for (const i of selectedIndices) {
+        currentHand[i] = null;
+    }
+    selectedIndices.clear();
+    renderHand();
+}
+
+function drawReplacements() {
+    for (let i = 0; i < currentHand.length; i++) {
+        if (currentHand[i] === null) {
+            const pool = getAvailablePool();
+            if (pool.length > 0) {
+                currentHand[i] = pickRandom(pool);
+            }
+        }
+    }
+    renderHand();
+}
+
+// --- Render ---
+function renderHand() {
+    handDisplay.innerHTML = '';
+    handDisplay.classList.remove('hidden');
+
+    for (let i = 0; i < currentHand.length; i++) {
+        const card = currentHand[i];
+        const el = document.createElement('div');
+
+        if (card === null) {
+            el.className = 'hand-card empty';
+        } else {
+            const isSelected = selectedIndices.has(i);
+            el.className = 'hand-card' + (isSelected ? ' selected' : '');
+            el.innerHTML = `
+                <img src="${card.image}" alt="${card.name}">
+                <div class="hand-card-name">${card.name}</div>
+            `;
+            el.addEventListener('click', () => toggleSelect(i));
+        }
+
+        handDisplay.appendChild(el);
+    }
+
+    // Show/hide action buttons
+    const hasSelected = selectedIndices.size > 0;
+    const hasEmpty = currentHand.some(c => c === null);
+
+    if (hasSelected || hasEmpty) {
+        actionButtons.classList.remove('hidden');
+    } else {
+        actionButtons.classList.add('hidden');
+    }
+
+    discardSelectedBtn.style.display = hasSelected ? '' : 'none';
+    drawReplacementsBtn.style.display = hasEmpty ? '' : 'none';
+}
+
+// --- Button wiring ---
+document.getElementById('drawAny').addEventListener('click', () => setDeck('any'));
+document.getElementById('drawMajor').addEventListener('click', () => setDeck('major'));
+document.getElementById('drawMinor').addEventListener('click', () => setDeck('minor'));
+
+function setDeck(deck) {
+    activeDeck = deck;
+    document.querySelectorAll('.button-group .draw-button').forEach(btn => btn.classList.remove('active'));
+    document.getElementById('draw' + deck.charAt(0).toUpperCase() + deck.slice(1)).classList.add('active');
+}
+
+document.getElementById('sizeDown').addEventListener('click', () => {
+    if (handSize > 1) {
+        handSize--;
+        handSizeDisplay.textContent = handSize;
+    }
 });
 
-drawMajorButton.addEventListener('click', () => {
-    displayCard(majorArcana);
+document.getElementById('sizeUp').addEventListener('click', () => {
+    if (handSize < 10) {
+        handSize++;
+        handSizeDisplay.textContent = handSize;
+    }
 });
 
-drawMinorButton.addEventListener('click', () => {
-    displayCard(minorArcana);
-});
+document.getElementById('drawHand').addEventListener('click', drawHand);
+discardSelectedBtn.addEventListener('click', discardSelected);
+drawReplacementsBtn.addEventListener('click', drawReplacements);

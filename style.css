@@ -10,8 +10,8 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 20px;
+    align-items: flex-start;
+    padding: 40px 20px;
     position: relative;
     overflow: hidden;
 }
@@ -38,7 +38,7 @@ body::before {
 
 .container {
     text-align: center;
-    max-width: 600px;
+    max-width: 900px;
     width: 100%;
     position: relative;
     z-index: 1;
@@ -104,90 +104,161 @@ h1 {
     transform: translateY(0);
 }
 
-.card-display {
-    margin-top: 2rem;
-    opacity: 1;
-    transition: opacity 0.3s ease;
+.draw-button.active {
+    background: linear-gradient(145deg, #b8932e, #d4af37);
+    color: #0f0f1e;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.7);
 }
 
-.card-display.hidden {
-    opacity: 0;
-    visibility: hidden;
+/* Hand controls row */
+.hand-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 1rem;
 }
 
-.card {
+.hand-size-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.hand-size-control button {
+    background: linear-gradient(145deg, #2a2a40, #1a1a2e);
+    color: #d4af37;
+    border: 2px solid #d4af37;
+    width: 36px;
+    height: 36px;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    line-height: 1;
+}
+
+.hand-size-control button:hover {
+    background: linear-gradient(145deg, #3a3a50, #2a2a40);
+    box-shadow: 0 6px 25px rgba(212, 175, 55, 0.5);
+    transform: translateY(-2px);
+}
+
+.hand-size-control button:active {
+    transform: translateY(0);
+}
+
+#handSizeDisplay {
+    color: #d4af37;
+    font-size: 1.2rem;
+    min-width: 2ch;
+    text-align: center;
+}
+
+/* Hand card grid */
+.hand-display {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.hand-display.hidden {
+    display: none;
+}
+
+.hand-card {
+    width: 130px;
+    min-height: 220px;
     background: linear-gradient(145deg, #16213e, #0f1626);
-    border: 3px solid #d4af37;
+    border: 2px solid #d4af37;
     border-radius: 8px;
-    padding: 2.5rem;
-    box-shadow:
-        0 10px 40px rgba(0, 0, 0, 0.6),
-        inset 0 0 30px rgba(212, 175, 55, 0.1);
-    animation: fadeIn 0.5s ease;
-    position: relative;
-    min-height: 600px;
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    padding: 8px;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.4s ease;
+    position: relative;
+    transition: border-color 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
 }
 
-.card::before,
-.card::after {
-    content: '✦';
-    position: absolute;
+.hand-card:hover {
+    box-shadow: 0 6px 25px rgba(212, 175, 55, 0.4);
+}
+
+.hand-card img {
+    width: 100%;
+    aspect-ratio: 280 / 480;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    display: block;
+}
+
+.hand-card-name {
     color: #d4af37;
-    font-size: 1.5rem;
+    font-size: 0.75rem;
+    text-align: center;
+    letter-spacing: 0.05em;
+    line-height: 1.3;
+}
+
+/* Selected state */
+.hand-card.selected {
+    border-color: #c0392b;
     opacity: 0.6;
+    box-shadow: 0 4px 15px rgba(192, 57, 43, 0.5);
 }
 
-.card::before {
-    top: 15px;
-    left: 15px;
+.hand-card.selected::after {
+    content: '✕';
+    position: absolute;
+    top: 4px;
+    right: 8px;
+    color: #e74c3c;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-shadow: 0 0 6px rgba(231, 76, 60, 0.8);
 }
 
-.card::after {
-    bottom: 15px;
-    right: 15px;
+/* Empty slot */
+.hand-card.empty {
+    border: 2px dashed rgba(212, 175, 55, 0.4);
+    background: rgba(15, 15, 30, 0.5);
+    cursor: default;
+    box-shadow: none;
+}
+
+.hand-card.empty:hover {
+    box-shadow: none;
+}
+
+/* Action buttons row */
+.action-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.action-buttons.hidden {
+    display: none;
 }
 
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: scale(0.95) rotateY(10deg);
+        transform: scale(0.92) translateY(8px);
     }
     to {
         opacity: 1;
-        transform: scale(1) rotateY(0deg);
+        transform: scale(1) translateY(0);
     }
-}
-
-.card-image {
-    width: 280px;
-    height: 480px;
-    object-fit: contain;
-    border-radius: 5px;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
-    border: 2px solid #d4af37;
-}
-
-#cardName {
-    color: #d4af37;
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-    letter-spacing: 0.08em;
-    text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-    font-weight: normal;
-}
-
-#cardMeaning {
-    color: #c9c9d8;
-    font-size: 1.1rem;
-    line-height: 1.8;
-    font-style: italic;
-    min-height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }

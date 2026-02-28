@@ -11,15 +11,22 @@
         <h1>The Worm's Oracle</h1>
         <p class="game-link">for <a href="https://www.hismajestytheworm.games/" target="_blank">His Majesty the Worm</a></p>
         <div class="button-group">
-            <button id="drawAny" class="draw-button">Any</button>
+            <button id="drawAny" class="draw-button active">Any</button>
             <button id="drawMajor" class="draw-button">Major</button>
             <button id="drawMinor" class="draw-button">Minor</button>
         </div>
-        <div id="cardDisplay" class="card-display hidden">
-            <div class="card">
-                <img id="cardImage" class="card-image" src="" alt="">
-                <h2 id="cardName"></h2>
+        <div class="hand-controls">
+            <div class="hand-size-control">
+                <button id="sizeDown">−</button>
+                <span id="handSizeDisplay">3</span>
+                <button id="sizeUp">+</button>
             </div>
+            <button id="drawHand" class="draw-button">Draw Hand</button>
+        </div>
+        <div id="handDisplay" class="hand-display hidden"></div>
+        <div id="actionButtons" class="action-buttons hidden">
+            <button id="discardSelected" class="draw-button">Discard Selected</button>
+            <button id="drawReplacements" class="draw-button">Draw Replacements</button>
         </div>
     </div>
     <script src="script.js"></script>
