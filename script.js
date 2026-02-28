@@ -155,7 +155,26 @@ function toggleSelect(i) {
     } else {
         selectedIndices.add(i);
     }
-    renderHand();
+    updateSelectionUI();
+}
+
+function updateSelectionUI() {
+    handDisplay.querySelectorAll('.hand-card[data-index]').forEach(el => {
+        const i = parseInt(el.dataset.index);
+        el.classList.toggle('selected', selectedIndices.has(i));
+    });
+
+    const hasSelected = selectedIndices.size > 0;
+    const hasEmpty = currentHand.some(c => c === null);
+
+    if (hasSelected || hasEmpty) {
+        actionButtons.classList.remove('hidden');
+    } else {
+        actionButtons.classList.add('hidden');
+    }
+
+    discardSelectedBtn.style.display = hasSelected ? '' : 'none';
+    drawReplacementsBtn.style.display = hasEmpty ? '' : 'none';
 }
 
 function discardSelected() {
@@ -193,6 +212,7 @@ function renderHand() {
         } else {
             const isSelected = selectedIndices.has(i);
             el.className = 'hand-card' + (isSelected ? ' selected' : '');
+            el.dataset.index = i;
             el.innerHTML = `
                 <img src="${card.image}" alt="${card.name}">
                 <div class="hand-card-name">${card.name}</div>
