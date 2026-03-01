@@ -93,7 +93,7 @@ const minorArcana = tarotCards.slice(22);
 
 // --- State ---
 let activeDeck = 'any';
-let handSize = 3;
+let handSize = 4;
 let currentHand = [];       // array of card objects or null (empty slot)
 let selectedIndices = new Set();
 
