@@ -10,25 +10,25 @@
     <div class="container">
         <h1>The Worm's Oracle</h1>
         <p class="game-link">for <a href="https://www.hismajestytheworm.games/" target="_blank">His Majesty the Worm</a></p>
-        <div class="button-group">
-            <button id="drawAny" class="draw-button active">Any</button>
-            <button id="drawMajor" class="draw-button">Major</button>
-            <button id="drawMinor" class="draw-button">Minor</button>
+        <div class="deck-selector">
+            <button id="drawAny" class="deck-btn active">Any</button>
+            <button id="drawMajor" class="deck-btn">Major</button>
+            <button id="drawMinor" class="deck-btn">Minor</button>
         </div>
         <div class="hand-controls">
-            <button id="drawOne" class="draw-button">Draw One</button>
             <div class="hand-size-control">
-                <button id="sizeDown">−</button>
+                <button id="sizeDown" class="stepper-btn">−</button>
                 <span id="handSizeDisplay">3</span>
-                <button id="sizeUp">+</button>
+                <button id="sizeUp" class="stepper-btn">+</button>
             </div>
-            <button id="drawHand" class="draw-button">Draw Hand</button>
+            <button id="drawHand" class="draw-button primary">Draw Hand</button>
+            <button id="drawOne" class="draw-button primary">Draw One</button>
         </div>
         <div id="handDisplay" class="hand-display hidden"></div>
         <div id="handTotal" class="hand-total hidden"></div>
         <div id="actionButtons" class="action-buttons hidden">
-            <button id="discardSelected" class="draw-button">Discard Selected</button>
-            <button id="drawReplacements" class="draw-button">Draw Replacements</button>
+            <button id="discardSelected" class="draw-button secondary">Discard Selected</button>
+            <button id="drawReplacements" class="draw-button secondary">Draw Replacements</button>
         </div>
     </div>
     <script src="script.js"></script>

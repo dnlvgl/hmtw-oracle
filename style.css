@@ -17,23 +17,13 @@ body {
 }
 
 body::before {
-    content: '✦ ✧ ★ ✦ ✧';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    font-size: 2rem;
-    color: rgba(212, 175, 55, 0.1);
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(212, 175, 55, 0.12) 1px, transparent 1px);
+    background-size: 48px 48px;
     pointer-events: none;
-    letter-spacing: 4rem;
-    line-height: 8rem;
-    animation: twinkle 4s infinite;
-}
-
-@keyframes twinkle {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.6; }
+    z-index: 0;
 }
 
 .container {
@@ -71,43 +61,42 @@ h1 {
     text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
 }
 
-.button-group {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    justify-content: center;
+/* Deck selector — pill segmented control */
+.deck-selector {
+    display: inline-flex;
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    border-radius: 100px;
+    overflow: hidden;
+    margin-bottom: 1.75rem;
+    background: rgba(15, 15, 30, 0.6);
 }
 
-.draw-button {
-    background: linear-gradient(145deg, #2a2a40, #1a1a2e);
-    color: #d4af37;
-    border: 2px solid #d4af37;
-    padding: 12px 25px;
-    font-size: 1rem;
+.deck-btn {
+    font-family: 'Georgia', serif;
+    font-size: 0.8rem;
     font-weight: normal;
-    letter-spacing: 0.15em;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    letter-spacing: 0.06em;
     text-transform: uppercase;
+    color: rgba(212, 175, 55, 0.6);
+    background: transparent;
+    border: none;
+    padding: 7px 20px;
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
 }
 
-.draw-button:hover {
-    background: linear-gradient(145deg, #3a3a50, #2a2a40);
-    box-shadow: 0 6px 25px rgba(212, 175, 55, 0.5);
-    transform: translateY(-2px);
+.deck-btn + .deck-btn {
+    border-left: 1px solid rgba(212, 175, 55, 0.2);
 }
 
-.draw-button:active {
-    transform: translateY(0);
+.deck-btn:hover {
+    color: rgba(212, 175, 55, 0.9);
+    background: rgba(212, 175, 55, 0.08);
 }
 
-.draw-button.active {
-    background: linear-gradient(145deg, #b8932e, #d4af37);
-    color: #0f0f1e;
-    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.7);
+.deck-btn.active {
+    background: rgba(212, 175, 55, 0.15);
+    color: #d4af37;
 }
 
 /* Hand controls row */
@@ -125,28 +114,25 @@ h1 {
     gap: 0.5rem;
 }
 
-.hand-size-control button {
-    background: linear-gradient(145deg, #2a2a40, #1a1a2e);
-    color: #d4af37;
-    border: 2px solid #d4af37;
-    width: 36px;
-    height: 36px;
-    font-size: 1.2rem;
-    border-radius: 5px;
+/* Ghost stepper buttons */
+.stepper-btn {
+    background: transparent;
+    color: rgba(212, 175, 55, 0.5);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    width: 30px;
+    height: 30px;
+    font-size: 1.1rem;
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-    line-height: 1;
+    transition: color 0.2s, border-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.hand-size-control button:hover {
-    background: linear-gradient(145deg, #3a3a50, #2a2a40);
-    box-shadow: 0 6px 25px rgba(212, 175, 55, 0.5);
-    transform: translateY(-2px);
-}
-
-.hand-size-control button:active {
-    transform: translateY(0);
+.stepper-btn:hover {
+    color: #d4af37;
+    border-color: rgba(212, 175, 55, 0.6);
 }
 
 #handSizeDisplay {
@@ -154,6 +140,44 @@ h1 {
     font-size: 1.2rem;
     min-width: 2ch;
     text-align: center;
+}
+
+/* Primary — Draw Hand (gold filled, dominant) */
+.draw-button.primary {
+    background: linear-gradient(135deg, #c9a227, #d4af37, #e8c547);
+    color: #0f0f1e;
+    font-family: 'Georgia', serif;
+    font-size: 1.05rem;
+    font-weight: bold;
+    padding: 14px 36px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 24px rgba(212, 175, 55, 0.45), 0 1px 0 rgba(255,255,255,0.15) inset;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.draw-button.primary:hover {
+    box-shadow: 0 6px 32px rgba(212, 175, 55, 0.65), 0 1px 0 rgba(255,255,255,0.2) inset;
+}
+
+/* Secondary — Discard / Replace (outlined, subtle) */
+.draw-button.secondary {
+    background: rgba(212, 175, 55, 0.08);
+    color: #d4af37;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    font-family: 'Georgia', serif;
+    font-size: 0.875rem;
+    padding: 9px 20px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.draw-button.secondary:hover {
+    background: rgba(212, 175, 55, 0.15);
+    border-color: rgba(212, 175, 55, 0.7);
+    transform: translateY(-1px);
 }
 
 /* Hand card grid */
@@ -173,7 +197,7 @@ h1 {
 .hand-card {
     width: 100%;
     background: linear-gradient(145deg, #16213e, #0f1626);
-    border: 2px solid #d4af37;
+    border: 1px solid rgba(212, 175, 55, 0.3);
     border-radius: 8px;
     cursor: pointer;
     display: flex;
@@ -185,20 +209,44 @@ h1 {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     animation: fadeIn 0.4s ease;
     position: relative;
-    transition: border-color 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+    transition: border-color 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .hand-card:hover {
     box-shadow: 0 6px 25px rgba(212, 175, 55, 0.4);
 }
 
-.hand-card img {
+/* Card image wrapper for badge overlay */
+.hand-card-image-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.hand-card-image-wrap img {
     width: 100%;
     aspect-ratio: 280 / 480;
     object-fit: cover;
     border-radius: 4px;
     border: 1px solid rgba(212, 175, 55, 0.4);
     display: block;
+}
+
+.hand-card-value-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: rgba(10, 10, 25, 0.82);
+    backdrop-filter: blur(4px);
+    color: #d4af37;
+    font-family: 'Georgia', serif;
+    font-size: 0.72rem;
+    font-weight: bold;
+    line-height: 1;
+    padding: 3px 6px;
+    border-radius: 4px;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    text-shadow: 0 0 6px rgba(212, 175, 55, 0.6);
+    pointer-events: none;
 }
 
 .hand-card-name {
@@ -209,26 +257,19 @@ h1 {
     line-height: 1.3;
 }
 
-.hand-card-value {
-    color: #d4af37;
-    font-size: 1.1rem;
-    font-weight: bold;
-    letter-spacing: 0.05em;
-    text-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
-}
-
 /* Selected state */
 .hand-card.selected {
     border-color: #c0392b;
     opacity: 0.6;
     box-shadow: 0 4px 15px rgba(192, 57, 43, 0.5);
+    transform: scale(0.97);
 }
 
 .hand-card.selected::after {
     content: '✕';
     position: absolute;
-    top: 4px;
-    right: 8px;
+    top: 8px;
+    left: 8px;
     color: #e74c3c;
     font-size: 1.1rem;
     font-weight: bold;
@@ -246,6 +287,7 @@ h1 {
 
 .hand-card.empty:hover {
     box-shadow: none;
+    transform: none;
 }
 
 /* Hand total */
@@ -268,6 +310,8 @@ h1 {
     gap: 1rem;
     justify-content: center;
     margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(212, 175, 55, 0.12);
 }
 
 .action-buttons.hidden {

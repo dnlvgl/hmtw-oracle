@@ -214,9 +214,11 @@ function renderHand() {
             el.className = 'hand-card' + (isSelected ? ' selected' : '');
             el.dataset.index = i;
             el.innerHTML = `
-                <img src="${card.image}" alt="${card.name}">
+                <div class="hand-card-image-wrap">
+                    <img src="${card.image}" alt="${card.name}">
+                    <span class="hand-card-value-badge">${getCardValue(card)}</span>
+                </div>
                 <div class="hand-card-name">${card.name}</div>
-                <div class="hand-card-value">${getCardValue(card)}</div>
             `;
             el.addEventListener('click', () => toggleSelect(i));
         }
@@ -255,7 +257,7 @@ document.getElementById('drawMinor').addEventListener('click', () => setDeck('mi
 
 function setDeck(deck) {
     activeDeck = deck;
-    document.querySelectorAll('.button-group .draw-button').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.deck-selector .deck-btn').forEach(btn => btn.classList.remove('active'));
     document.getElementById('draw' + deck.charAt(0).toUpperCase() + deck.slice(1)).classList.add('active');
 }
 
